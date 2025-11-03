@@ -1,0 +1,326 @@
+---
+title: "Two words about good practices in coding"
+author: "Matteo Tomasini, GRIDH, University of Gothenburg"
+date: "2025-11-03"
+format: 
+  revealjs:
+    scrollable: true
+    theme: dracula
+    incremental: true
+    code-block-height: 500px
+    link-external-newwindow: true
+    width: 1200
+jupyter: python3
+---
+
+## Motivation
+
+- You might have felt some sort of pressure about learning to code
+- I'm here to tell you that the pressure is warranted! :)
+- In this short lecture:
+    - I will call it "coding" or "programming" indiscriminately
+    - I will not teach you to code (I cannot)
+    - I will nonetheless teach you some principles about how code should be organized and used
+
+## A little story {.smaller}
+
+I have a friend in the humanities. A few months ago he was talking about how long it took him to compile a dataset in different shapes. It turns out that what he had was:
+
+- A master document containing the raw form of his data
+- A second dataset _compiled by hand_ which organized those data to be used for one specific visualization
+- A third dataset _compiled by hand_ which organized those data to be used for a second specific visualization
+- A fourth... you see where I'm going with this.
+
+## Historical reasons?
+:::{.fragment}
+Much of research in the humanities (and I suspect social sciences too) was done by painstakingly filling out data and re-organizing data when needed, depending on who needed the data and for what.
+:::
+
+:::{.fragment}
+...and so it keeps being taught like that!
+:::
+
+## Why coding is necessary for scientists {.smaller}
+
+:::{.fragment}
+What can coding be used for?
+
+- Compiling data sources
+- Re-organizing data sources
+- Analysing data
+- **Visualizing data** 
+- Writing multimedia articles, presentations, etc
+- Automatizing boring repetitive tasks
+:::
+
+:::{.fragment}
+Fundamentally: it makes these processes replicable! It's paramount for good science.
+:::
+
+## How do we code "properly"?
+
+Good code follows a couple of principles:
+
+- readable (also after 6 months)
+- modifiable (by someone else, if necessary)
+- testable (and tested!)
+
+## Programming to make code readable
+
+You can use code as documentation of your processes.
+
+:::{.fragment}
+Compare this:
+```{r}
+a<-seq(0,100,0.1)
+b<-dnorm(a,40,2)
+plot(a,b,type="l",main="Normal distribution",lty=2)
+```
+:::
+
+:::{.fragment}
+To this:
+```{R}
+# generate normal distribution function
+explanatory.variable <- seq(from=0, to=100, by=0.1)
+response.variable <- dnorm(explanatory.variable, mean=40, sd=2)
+
+# generate plot
+plot(explanatory.variable, response.variable, 
+     type="l", main="Normal distribution", 
+     lty=2)
+```
+:::
+
+## Readability
+
+Because programming languages are fundamentally a form of simplified English, write for humans, not for computers. 
+
+:::{.fragment}
+If you have a variable called "Voting Rate in a Neighborhood", don't call it "vrn" in your code. 
+```{R}
+vrn <- c(0.45, 0.5, 0.65) 		# bad practice
+
+vot.rate.nbh <- c(0.45, 0.5, 0.65) 	# better
+
+voting.rate.nbh <- c(0.45, 0.5, 0.65)	# great
+```
+:::
+
+:::{.fragment}
+Define functions that explain what they do.
+```{R}
+avg <- mean_rate(vrn)							# bad practice
+
+average.rate <- average_rate_from_neighborhoods(voting.rate.nbh)	# great
+```
+:::
+
+## Style guides
+
+Some programming language have official styles. E.g. in [Python](https://peps.python.org/pep-0008/), it is good style to write as:
+
+:::{.fragment}
+```{python}
+#| echo : true
+#| eval : false
+name = "Hari"			# variables start with lowercase
+last_name = "Seldon"		# variables use underscores to separate words
+
+YEARS_OF_DARKNESS = 1000	# constants are written all caps with underscores
+
+# specific rules about trailing spaces
+foundation(terminus[1], {trantor: 2})  # Correct
+foundation( terminus[ 1 ], { trantor : 2 } ) # Wrong
+```
+:::
+
+:::{.fragment}
+Not all languages have an official Style Guide! For the longest time R did not have one, now there is the [Google R's Style Guide](https://google.github.io/styleguide/Rguide.html) but many have developed their own style, e.g.:
+```{R}
+last.name <- "Seldon" 	# Python would complain with this!
+```
+:::
+
+## Use affordance to make your code more readable! {.smaller}
+
+"Affordances are the characteristics or properties of an object that suggest how it can be used." (from [here](https://www.interaction-design.org/literature/topics/affordances)).
+
+:::{.fragment}
+![Mori Masahiro Design Studio, LLC.](2004_MujiWanoSyokki-TeasetMug_Masahiro-Mori.jpg)
+:::
+
+## Programming to make code modifiable {.smaller}
+
+Making the code modifiable means many things. Mostly, it boils down to modularity and usage of patterns. 
+
+:::{.fragment}
+Modularity means, for example, to write independent units of code for different tasks, opposed to one long script without breaks. Use functions for tasks you perform regularly:
+```{R}
+plot_data_with_regression <- function(explanatory, response, line.color){
+  min.y.plot <- min(response) - 1
+  max.y.plot <- max(response) + 1
+  plot(explanatory, response, 
+       xlab="Variable 1", ylab="Response", 
+       ylim=c(min.y.plot, max.y.plot),
+       main="Data with model",
+       pch=5)
+  model <- lm(response ~ explanatory)
+  lines(explanatory, predict(model), col=line.color, lty=4, lwd = 3)
+}
+
+noise <- rnorm(101, 0, 5)
+variable.1 <- seq(from=0, to=10, 0.1)
+fake.data <- 0.56*expl + noise + 0.5
+
+plot_data_with_regression(variable.1, fake.data, "blue")
+```
+:::
+
+## Inputs and outputs
+
+Be careful and document what the different pieces of software need as input, and what they produce as output. 
+
+:::{.fragment}
+Think of your code as a Lego: each action is performed by different pieces, and the pieces have to fit together.
+:::
+
+:::{.fragment}
+The "teeth" on top of the Lego brick are the inputs, and the holes in the back of the brick are your outputs. They need to fit.
+:::
+
+:::{.fragment}
+Keeping track of your Lego pieces, and ensure that their inputs/outputs follow a pattern will make modifying your code easier!
+:::
+
+## Documenting code {.smaller}
+
+Documenting code means describing what a snippet of code does, what input it takes and what output it produces. All published packages come with documentation, e.g. [`dpylr`](https://dplyr.tidyverse.org/reference/index.html). 
+
+:::{.fragment}
+Here is an example of documentation in R:
+```{R}
+#' Plot a set of data with a linear regression.
+#'
+#' @param explanatory A vector of data for the explanatory variable.
+#' @param response A vector of data for the response variable.
+#' @param line.color A string determining the plot color of the regression.
+#' @returns Produces a plot including the explanatory VS the response variable, 
+#'          with the regression overlaid.
+plot_data_with_regression <- function(explanatory, response, line.color){
+  min.y.plot <- min(response) - 1
+  max.y.plot <- max(response) + 1
+  plot(explanatory, response, 
+       xlab="Variable 1", ylab="Response", 
+       ylim=c(min.y.plot, max.y.plot),
+       main="Data with model",
+       pch=5)
+  model <- lm(response ~ explanatory)
+  lines(explanatory, predict(model), col=line.color, lty=4, lwd = 3)
+}
+```
+This style of documentation can be used by the package `roxygen2` to generate documentation for a package.
+:::
+
+## Software design
+A whole course of software design will last a whole semester, and mastering software design will last the rest of your lives. There are different design philosophies. I mainly work with two.
+
+- Top-down design
+- "Exploratory" design
+
+## Top-down design
+
+Before writing any code, I define broad things that my code is supposed to do. E.g.
+```{pseudo-code}
+# this is pseudo-code!
+wakeUpProcedure = function(alarmSound) {
+    turnOffAlarm();
+    openEyes();
+    standUp();
+    walkToToilet();
+    ...
+}
+```
+
+:::{.fragment}
+For each component here, I will need to define other functions:
+```{pseudo-code}
+standUp = function() {
+    sitInBed();
+    turnTowardsBedSide(leftOrRight);
+    putFeetOnTheGround();
+    ...
+}
+```
+:::
+
+## "Exploratory" design {.smaller}
+
+- When you do data analysis and visualization, there are a few things that you will always do. 
+    - For example, load my data and look at it visually. 
+- Use an Integrated Development Environment (IDE) where you can run code line by line. 
+    - Examples: RStudio, Jupyter notebookw, Quarto, etc.
+- When you get at a point where you want to be able to produce a result (a figure, a piece of pipeline) you create a function for it.
+- By the end of the process, all your code should be safely enclosed into re-usable functions that are documented and work correctly.
+- These functions can be used in other processes!
+
+## Programming to make code testable
+
+Testing code = making sure that your code works
+
+:::{.fragment}
+Testing includes:
+
+- printing data to the console to check it
+- using dedicated testing functions (unit testing)
+- benchmarking
+- changing things at random to see if it keeps working
+- debugging
+:::
+
+:::{.fragment}
+But it is a super broad topic, I highly suggest you read up on it by yourself if you're interested!
+:::
+
+## Versioning
+
+Versioning is the process of keeping track of your code step by step. It allows you to update your code without fear of breaking something. 
+
+Much software is doing versioning automatically (e.g. Google Docs), but there is specific software that tracks your stuff for you.
+
+:::{.fragment}
+The point is to avoid a folder that looks like:
+```{folder content}
+analysis_v1.py
+analysis_v2.py
+analysis_v3.py
+analysis_final.py
+analysis_final_v2.py
+analysis_FINAL.py
+analysis_THIS_TIME_IS_REAL.py
+analysis_FML.py
+```
+:::
+
+## Conclusions
+
+This is a broad topic. Coding can be incredibly rewarding in itself, but even if you don't enjoy it, improving will save you a lot of time and problems.
+
+:::{.fragment}
+Even a marginal improvement on your coding skills will make your job easier.
+:::
+
+:::{.fragment}
+Don't dismiss programming as just "not for you", or "just for math people". It can really improve your researching life.
+:::
+
+:::{.fragment}
+Finally, vibe coding is OK... but it's very dangerous to code without knowing what code means.
+:::
+
+## Thank you for your attention!
+
+Further resources
+
+- [CodeRefinery](https://coderefinery.org/lessons/)
+- The Pragmatic Programmer, D. Thomas and A. Hunt
