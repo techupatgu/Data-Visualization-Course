@@ -1,0 +1,404 @@
+---
+title: "Visual data: from raw data to publication"
+author: "Matteo Tomasini, GRIDH, University of Gothenburg"
+date: "2025-11-05"
+format: 
+  revealjs:
+    scrollable: true
+    theme: solarized
+    incremental: true
+    code-block-height: 200px
+    footer: "Matteo Tomasini, GRIDH"
+    link-external-newwindow: true
+    width: 1500
+    height: 1000
+jupyter: python3
+editor: visual
+---
+
+## Learning objectives
+
+After this lecture you should:
+
+- better understand data and how to visualize them
+- know the main principles of Exploratory Data Analysis
+- have broad knowledge of where to find information about visualizations
+
+## Summary
+
+- Data types and data formats
+- Exploratory data analysis
+- Visualization for publication
+
+## Visualization VS statistics (i.e. numbers)
+
+- One supports the other!
+- Visualization is more immediate
+- Statistics alone can be tricky to interpret (humans are not so good at understanding what is behind numbers)
+- Visualization alone can lead you to wrong conclusions (humans are great at spotting fake patterns)
+- Both statistics and visualization need to serve a much more important thing: a hypothesis!
+
+## The power of data visualization
+
+Imagine you are presented with 4 datasets with variables $x_n$ and $y_n$:
+
+```{python}
+import seaborn as sns
+
+anscombe_long = sns.load_dataset("anscombe")
+wide = (anscombe_long.assign(g = anscombe_long.groupby('dataset').cumcount())
+                    .pivot(index='g', columns='dataset'))
+print (wide)
+```
+
+How much can you say from these datasets?
+
+## The power of data visualization {.smaller}
+
+Let's summarize the data, that is produce means, minima, maxima...
+
+```{python}
+
+import pandas as pd
+wide.describe()
+```
+
+Wait, are these the same dataset?
+
+## Nope! {.smaller}
+
+```{python}
+
+sns.set_theme(style="ticks")
+
+# Load the example dataset for Anscombe's quartet
+df = sns.load_dataset("anscombe")
+
+# Show the results of a linear regression within each dataset
+sns.lmplot(
+    data=anscombe_long, x="x", y="y", col="dataset", hue="dataset",
+    col_wrap=2, palette="muted", ci=None,
+    height=4, scatter_kws={"s": 50, "alpha": 1}
+)
+```
+
+[from Anscombe (1973)]{.smallcaps}
+
+## Another example of how data can trick you
+(Data visualization can be fun!)
+![](DinoSequential-1.gif)
+
+[The datasaurus by Albert Cairo (https://www.research.autodesk.com/publications/same-stats-different-graphs/]{.smallcaps}
+
+## A note about programming languages
+- Visualization does not require to learn programming, but it hugely benefits from it.
+- Programming languages allow you to manipulate your image in the way you prefer. 
+- Images are built in layers to get to your favorite result.
+- Favorite languages with lots of utilities for everybody: Python, R
+- Why not Stata / Matlab / ...? Probably because they are proprietary!
+
+## Understanding your data
+
+- Data types = different visualizations
+    - Understanding what data you have in your hand is more complex than it seems (e.g. is it a discrete variable? Continuous? Categorical?)
+    - Understanding data tells you how you wanna visualize it!
+- Data types are encoded differently in different languages:
+    - In R, available data types are `numeric`, `integer`, `logical`, `complex`, `character`
+    - In Python, data types are `int`, `float`, `complex`, `str`, `bytes`, `bytearray`, and `bool`
+- Data can typically follow certain distributions!
+    - Uniform distributions
+    - Normal distributions
+    - Log-normal distributions
+
+## Data types
+
+- typically, you will encounter some sort of numeric data, string data, categoric data, or boolean data.
+- numeric:
+    - ...numbers! Divided in continuous or discrete.
+    - ex: population size, population density, individual height, etc
+- string (or characters):
+    - letters, sentences, etc
+    - ex: open answers
+- categoric
+    - can be coded as either letters or numbers:
+    - ex: "country", "level of satisfaction from 1 to 5", ... 
+- boolean:
+    - True or False / 1 or 0
+
+## A word about data formats
+
+- different ways to format your data
+- most common data formats:
+    - Excel and similar (.xlsx, .xlsm, .ods)
+    - Comma separated variables (.csv)
+    - JavaScript Object Notation (.json)
+    - spatial data (.geojson, .shp, NetCDF, ...)
+    - SO MANY OTHERS (FITS, .dta, ...)
+- image formats:
+    - vector graphics (.svg, .ai, .eps, .pdf, ...)
+    - raster graphics (.jpg, .jpeg, .png, ...)
+
+## Visualization tools for EDA
+
+- EDA = Exploratory Data Analysis
+- The goal of EDA is to get a sense of your data
+- It tells you if the data needs cleaning (it normally does)
+- It tells you if there are biases you should be aware of
+- It starts driving your sense of discovery
+
+
+## 1. Barplots VS histograms
+
+Broadly speaking: a barplot visualizes the distribution of a **categorical** variable while the histogram visualizes the distribution of a **numerical** variable.
+
+![[From https://www.storytellingwithdata.com/blog/2021/1/28/histograms-and-bar-charts]{.smallcaps}](Differences+between+histograms+and+bar+charts.webp){width=80%}
+
+## What is a "distribution of data"?
+
+The distribution is a mathematical function that describes how the values of the data are distributed. For example:
+
+- independent measurements of the same variable tend to be normally distributed
+- income in a society tends to be log-normally distributed
+- the outcomes from a fair die are uniformly distributed
+- the number of offspring in a family tends to be a Poisson distribution
+
+## Bernoulli distribution
+
+Distribution of values from a two-values outcome (e.g. a coin toss)
+
+```{python}
+#| echo: true
+import matplotlib.pyplot as plt
+import random
+x = random.choices([0, 1], k=100)
+plt.hist(x)
+plt.show()
+```
+
+## Normal distribution
+
+"Continuous distribution for a real-valued random variable"
+```{python}
+import numpy as np
+seed = np.random.seed(1)
+```
+
+```{python}
+#| echo: true
+
+x = np.random.normal(0, 10, size=100)
+plt.hist(x, bins=20, range = (-40, 40), density=True)
+plt.plot(np.linspace(-40, 40, 10000), 
+		1/(10 * np.sqrt(2 * np.pi)) * np.exp( - (np.linspace(-40, 40, 10000))**2 / (2 * 10**2)))
+```
+
+## Pay attention to bin size!
+
+```{python}
+#| echo: true
+#| code-line-numbers: "2-3"
+fig, ax = plt.subplots(1,2)
+ax[0].hist(x, bins=50, range = (-40, 40), density=True)
+ax[1].hist(x, bins=2, range = (-40, 40), density=True)
+ax[0].plot(np.linspace(-40, 40, 10000), 
+		1/(10 * np.sqrt(2 * np.pi)) * np.exp( - (np.linspace(-40, 40, 10000))**2 / (2 * 10**2)))
+ax[1].plot(np.linspace(-40, 40, 10000), 
+		1/(10 * np.sqrt(2 * np.pi)) * np.exp( - (np.linspace(-40, 40, 10000))**2 / (2 * 10**2)))
+```
+
+
+## Log-normal distribution
+
+In this case, the **logarithm** of the real-valued random variable is normally distributed
+
+```{python} 
+#| echo : true
+x = np.exp(np.random.normal(0, 1, size = 100))
+plt.hist(x, bins=30, range = (0, 15))
+plt.show()
+```
+
+## 2. Scatterplots
+
+A scatter plot allows you to visualize the relationship between two numerical variables.
+
+```{python}
+#| echo : true
+x = np.linspace(1, 100, 100)
+y = [element if element > 0 else 0 for element in 5*np.log(x) + np.random.normal(0, 4, 100)]
+plt.plot(x, y, 'ro')
+plt.xlabel('Time')
+plt.ylabel('Number of individuals')
+plt.show()
+```
+
+## Scatterplots with too many points
+```{python}
+#| echo: true
+x = np.linspace(1, 5000, 5000)
+y = [element if element > 0 else 0 for element in 5*np.log(x) + np.random.normal(0, 4, 5000)]
+```
+
+::: {.column width=50% .fragment}
+```{python}
+#| echo : true
+plt.plot(x, y, 'bo')
+plt.show()
+```
+:::
+::: {.column width=50% .fragment}
+
+```{python}
+#| echo : true
+#| code-line-numbers : "1"
+plt.plot(x, y, 'bo', alpha=0.1)
+plt.show()
+```
+:::
+
+## 3. Boxplots
+
+A boxplot shows you the quartiles of a distribution of datapoints.
+
+```{python}
+#| echo : true
+sns.boxplot(y, orient='h', whis = (0.5, 99.5))
+plt.show()
+```
+
+## Example of a boxplot: the Iris dataset
+```{python}
+#| echo: true
+
+df = sns.load_dataset('iris')
+
+sns.boxplot( x=df["species"], y=df["sepal_length"], hue=df["species"] )
+
+```
+
+## Boxplots can be difficult friends
+
+![[Boxplots behaving badly (https://www.research.autodesk.com/publications/same-stats-different-graphs/)]{.smallcaps}](boxplots-1.gif){width=150%}
+
+
+## Enter swarmplots and violinplots!
+Similar to boxplots, but it also shows the distribution of points
+
+::: {.column}
+```{python}
+#| echo : true
+sns.swarmplot(x=df["species"], y=df["sepal_length"], hue = df["species"])
+```
+:::
+ 
+:::{.column}
+```{python}
+#| echo : true
+sns.violinplot(x=df["species"], y=df["sepal_length"], hue = df["species"])
+```
+:::
+
+## From EDA to publication
+
+- Once you have performed EDA on a dataset, you can dig deeper in your data
+- Figures are (one of) the key(s) for simple story telling
+- In the same way as you write a layout of a Section before you write, you want to know what figures will support your article before you write
+- Good rule of thumb: 1 figure (even composite) = 1 key result
+- A figure should be as self-explanatory as possible
+
+## Seriously: no pie charts
+
+Difficult to read. There are better ways...
+
+::: {.column width=50% .fragment}
+```{python}
+groups=['professors', 'postdocs', 'engineers', 'students']
+size_of_groups=[100, 91, 97, 400]
+plt.pie(size_of_groups, labels=groups)
+plt.show()
+```
+:::
+::: {.column width=50% .fragment}
+```{python}
+plt.bar(groups, size_of_groups)
+plt.grid()
+plt.show()
+```
+:::
+
+## Anatomy of a plot in Python (or in R)
+
+- An image is built in layers:
+    - a grid
+    - axes, ticks and labels
+    - content: scatterplot, histogram, density, etc
+    - add-ons: themes, grid, text, annotations
+- An example: [the ggplot2 cheat sheet](https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf) 
+
+## Visualization styles for your publications
+First, let us look at some advanced visualization styles:
+
+- [How to pick a visualization](https://www.data-to-viz.com/)
+- [Seaborn Gallery](https://seaborn.pydata.org/examples/index.html)
+- [Python Gallery](https://python-graph-gallery.com/)
+- [R / ggplot2 Gallery](https://r-graph-gallery.com/)
+
+
+## Color Palettes
+
+- [Colorbrewer](https://colorbrewer2.org/)
+- [Matplotlib (python) base palettes](https://matplotlib.org/stable/users/explain/colors/colormaps.html)
+- [R palettes](https://r-graph-gallery.com/color-palette-finder)
+- [(Seaborn palettes)](https://seaborn.pydata.org/tutorial/color_palettes.html)
+
+
+## Exercise: perform EDA of your data (or use the dataset provided)
+```{python}
+#| echo: true
+
+import pandas as pd
+tsunami = pd.read_csv('earthquake_data_tsunami.csv')
+tsunami.head()
+```
+(source [Kaggle](https://www.kaggle.com/datasets/ahmeduzaki/global-earthquake-tsunami-risk-assessment-dataset))
+
+## To succeed:
+
+:::{.callout-tip title="Use R or Python, or something else entirely"}
+In R, try using base R or the Tidyverse suite of libraries. In Python, play around with Matplotlib, Pandas and Seaborn
+:::
+1. Perform EDA on your dataset.
+2. Produce at least 3 fun facts supported by visualization. E.g.:
+    - interesting biases that you found in the data through EDA
+    - an interesting correlation between two variables
+    - unusual concentrations of data around certain variables
+3. Create a complex image that could support a hypothesis. E.g.:
+    - a scatterplot which includes a regression of your data
+    - a multiple plot showing different aspects of your data
+
+## InfraVis
+
+InfraVis can support you if you have visualization needs! 
+
+![](InfraVis-fontDarkRight.png)
+
+## Thank you for your attention!
+
+:::{.fragment}
+Further readings:
+
+- [Visualizing data in political science, R. Traunmüller](https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf)
+- [R for Data Science (2e), Wickam et al.](https://r4ds.hadley.nz/data-visualize.html)
+- [Python data science handbook, ch. 4](https://jakevdp.github.io/PythonDataScienceHandbook/04.00-introduction-to-matplotlib.html)
+:::
+
+:::{.fragment}
+Cheatsheets:
+
+- [Collection of Python cheatsheets](https://python-graph-gallery.com/cheat-sheets/)
+- [Collection of R cheatsheets](https://r-graph-gallery.com/cheatsheets.html)
+:::
+
+:::{.aside}
+Parts of this course took inspiration form a similar course by Marc Vander Linden (University of Bournemouth).
+:::

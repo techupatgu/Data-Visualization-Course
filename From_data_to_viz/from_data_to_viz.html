@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="from_data_to_viz_files/libs/clipboard/clipboard.min.js"></script>
+<script src="from_data_to_viz_files/libs/quarto-html/tabby.min.js"></script>
+<script src="from_data_to_viz_files/libs/quarto-html/popper.min.js"></script>
+<script src="from_data_to_viz_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="from_data_to_viz_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="from_data_to_viz_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="from_data_to_viz_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
+
+  <meta name="author" content="Matteo Tomasini, GRIDH, University of Gothenburg">
+  <meta name="dcterms.date" content="2025-11-05">
+  <title>Visual data: from raw data to publication</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="from_data_to_viz_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="from_data_to_viz_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="from_data_to_viz_files/libs/revealjs/dist/theme/quarto-086115159f1ba7b01ba3deaf5848da40.css">
+  <link href="from_data_to_viz_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="from_data_to_viz_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="from_data_to_viz_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="from_data_to_viz_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Visual data: from raw data to publication</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Matteo Tomasini, GRIDH, University of Gothenburg 
+</div>
+</div>
+</div>
+
+  <p class="date">2025-11-05</p>
+</section>
+<section id="learning-objectives" class="slide level2">
+<h2>Learning objectives</h2>
+<p>After this lecture you should:</p>
+<ul>
+<li class="fragment">better understand data and how to visualize them</li>
+<li class="fragment">know the main principles of Exploratory Data Analysis</li>
+<li class="fragment">have broad knowledge of where to find information about visualizations</li>
+</ul>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<ul>
+<li class="fragment">Data types and data formats</li>
+<li class="fragment">Exploratory data analysis</li>
+<li class="fragment">Visualization for publication</li>
+</ul>
+</section>
+<section id="visualization-vs-statistics-i.e.-numbers" class="slide level2">
+<h2>Visualization VS statistics (i.e.&nbsp;numbers)</h2>
+<ul>
+<li class="fragment">One supports the other!</li>
+<li class="fragment">Visualization is more immediate</li>
+<li class="fragment">Statistics alone can be tricky to interpret (humans are not so good at understanding what is behind numbers)</li>
+<li class="fragment">Visualization alone can lead you to wrong conclusions (humans are great at spotting fake patterns)</li>
+<li class="fragment">Both statistics and visualization need to serve a much more important thing: a hypothesis!</li>
+</ul>
+</section>
+<section id="the-power-of-data-visualization" class="slide level2">
+<h2>The power of data visualization</h2>
+<p>Imagine you are presented with 4 datasets with variables <span class="math inline">\(x_n\)</span> and <span class="math inline">\(y_n\)</span>:</p>
+<div id="04cea496" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-stdout">
+<pre><code>            x                        y                    
+dataset     I    II   III    IV      I    II    III     IV
+g                                                         
+0        10.0  10.0  10.0   8.0   8.04  9.14   7.46   6.58
+1         8.0   8.0   8.0   8.0   6.95  8.14   6.77   5.76
+2        13.0  13.0  13.0   8.0   7.58  8.74  12.74   7.71
+3         9.0   9.0   9.0   8.0   8.81  8.77   7.11   8.84
+4        11.0  11.0  11.0   8.0   8.33  9.26   7.81   8.47
+5        14.0  14.0  14.0   8.0   9.96  8.10   8.84   7.04
+6         6.0   6.0   6.0   8.0   7.24  6.13   6.08   5.25
+7         4.0   4.0   4.0  19.0   4.26  3.10   5.39  12.50
+8        12.0  12.0  12.0   8.0  10.84  9.13   8.15   5.56
+9         7.0   7.0   7.0   8.0   4.82  7.26   6.42   7.91
+10        5.0   5.0   5.0   8.0   5.68  4.74   5.73   6.89</code></pre>
+</div>
+</div>
+<p>How much can you say from these datasets?</p>
+</section>
+<section id="the-power-of-data-visualization-1" class="slide level2 smaller">
+<h2>The power of data visualization</h2>
+<p>Let’s summarize the data, that is produce means, minima, maxima…</p>
+<div id="fafe8c8a" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="363">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th colspan="4" data-quarto-table-cell-role="th" data-halign="left">x</th>
+<th colspan="4" data-quarto-table-cell-role="th" data-halign="left">y</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">dataset</th>
+<th data-quarto-table-cell-role="th">I</th>
+<th data-quarto-table-cell-role="th">II</th>
+<th data-quarto-table-cell-role="th">III</th>
+<th data-quarto-table-cell-role="th">IV</th>
+<th data-quarto-table-cell-role="th">I</th>
+<th data-quarto-table-cell-role="th">II</th>
+<th data-quarto-table-cell-role="th">III</th>
+<th data-quarto-table-cell-role="th">IV</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">count</th>
+<td>11.000000</td>
+<td>11.000000</td>
+<td>11.000000</td>
+<td>11.000000</td>
+<td>11.000000</td>
+<td>11.000000</td>
+<td>11.000000</td>
+<td>11.000000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">mean</th>
+<td>9.000000</td>
+<td>9.000000</td>
+<td>9.000000</td>
+<td>9.000000</td>
+<td>7.500909</td>
+<td>7.500909</td>
+<td>7.500000</td>
+<td>7.500909</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">std</th>
+<td>3.316625</td>
+<td>3.316625</td>
+<td>3.316625</td>
+<td>3.316625</td>
+<td>2.031568</td>
+<td>2.031657</td>
+<td>2.030424</td>
+<td>2.030579</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">min</th>
+<td>4.000000</td>
+<td>4.000000</td>
+<td>4.000000</td>
+<td>8.000000</td>
+<td>4.260000</td>
+<td>3.100000</td>
+<td>5.390000</td>
+<td>5.250000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">25%</th>
+<td>6.500000</td>
+<td>6.500000</td>
+<td>6.500000</td>
+<td>8.000000</td>
+<td>6.315000</td>
+<td>6.695000</td>
+<td>6.250000</td>
+<td>6.170000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">50%</th>
+<td>9.000000</td>
+<td>9.000000</td>
+<td>9.000000</td>
+<td>8.000000</td>
+<td>7.580000</td>
+<td>8.140000</td>
+<td>7.110000</td>
+<td>7.040000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">75%</th>
+<td>11.500000</td>
+<td>11.500000</td>
+<td>11.500000</td>
+<td>8.000000</td>
+<td>8.570000</td>
+<td>8.950000</td>
+<td>7.980000</td>
+<td>8.190000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">max</th>
+<td>14.000000</td>
+<td>14.000000</td>
+<td>14.000000</td>
+<td>19.000000</td>
+<td>10.840000</td>
+<td>9.260000</td>
+<td>12.740000</td>
+<td>12.500000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Wait, are these the same dataset?</p>
+</section>
+<section id="nope" class="slide level2 smaller">
+<h2>Nope!</h2>
+<div id="f15b0dfd" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-4-output-1.png" width="753" height="752"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="smallcaps">from Anscombe (1973)</span></p>
+</section>
+<section id="another-example-of-how-data-can-trick-you" class="slide level2">
+<h2>Another example of how data can trick you</h2>
+<p>(Data visualization can be fun!) <img data-src="DinoSequential-1.gif"></p>
+<p><span class="smallcaps">The datasaurus by Albert Cairo (https://www.research.autodesk.com/publications/same-stats-different-graphs/</span></p>
+</section>
+<section id="a-note-about-programming-languages" class="slide level2">
+<h2>A note about programming languages</h2>
+<ul>
+<li class="fragment">Visualization does not require to learn programming, but it hugely benefits from it.</li>
+<li class="fragment">Programming languages allow you to manipulate your image in the way you prefer.</li>
+<li class="fragment">Images are built in layers to get to your favorite result.</li>
+<li class="fragment">Favorite languages with lots of utilities for everybody: Python, R</li>
+<li class="fragment">Why not Stata / Matlab / …? Probably because they are proprietary!</li>
+</ul>
+</section>
+<section id="understanding-your-data" class="slide level2">
+<h2>Understanding your data</h2>
+<ul>
+<li class="fragment">Data types = different visualizations
+<ul>
+<li class="fragment">Understanding what data you have in your hand is more complex than it seems (e.g.&nbsp;is it a discrete variable? Continuous? Categorical?)</li>
+<li class="fragment">Understanding data tells you how you wanna visualize it!</li>
+</ul></li>
+<li class="fragment">Data types are encoded differently in different languages:
+<ul>
+<li class="fragment">In R, available data types are <code>numeric</code>, <code>integer</code>, <code>logical</code>, <code>complex</code>, <code>character</code></li>
+<li class="fragment">In Python, data types are <code>int</code>, <code>float</code>, <code>complex</code>, <code>str</code>, <code>bytes</code>, <code>bytearray</code>, and <code>bool</code></li>
+</ul></li>
+<li class="fragment">Data can typically follow certain distributions!
+<ul>
+<li class="fragment">Uniform distributions</li>
+<li class="fragment">Normal distributions</li>
+<li class="fragment">Log-normal distributions</li>
+</ul></li>
+</ul>
+</section>
+<section id="data-types" class="slide level2">
+<h2>Data types</h2>
+<ul>
+<li class="fragment">typically, you will encounter some sort of numeric data, string data, categoric data, or boolean data.</li>
+<li class="fragment">numeric:
+<ul>
+<li class="fragment">…numbers! Divided in continuous or discrete.</li>
+<li class="fragment">ex: population size, population density, individual height, etc</li>
+</ul></li>
+<li class="fragment">string (or characters):
+<ul>
+<li class="fragment">letters, sentences, etc</li>
+<li class="fragment">ex: open answers</li>
+</ul></li>
+<li class="fragment">categoric
+<ul>
+<li class="fragment">can be coded as either letters or numbers:</li>
+<li class="fragment">ex: “country”, “level of satisfaction from 1 to 5”, …</li>
+</ul></li>
+<li class="fragment">boolean:
+<ul>
+<li class="fragment">True or False / 1 or 0</li>
+</ul></li>
+</ul>
+</section>
+<section id="a-word-about-data-formats" class="slide level2">
+<h2>A word about data formats</h2>
+<ul>
+<li class="fragment">different ways to format your data</li>
+<li class="fragment">most common data formats:
+<ul>
+<li class="fragment">Excel and similar (.xlsx, .xlsm, .ods)</li>
+<li class="fragment">Comma separated variables (.csv)</li>
+<li class="fragment">JavaScript Object Notation (.json)</li>
+<li class="fragment">spatial data (.geojson, .shp, NetCDF, …)</li>
+<li class="fragment">SO MANY OTHERS (FITS, .dta, …)</li>
+</ul></li>
+<li class="fragment">image formats:
+<ul>
+<li class="fragment">vector graphics (.svg, .ai, .eps, .pdf, …)</li>
+<li class="fragment">raster graphics (.jpg, .jpeg, .png, …)</li>
+</ul></li>
+</ul>
+</section>
+<section id="visualization-tools-for-eda" class="slide level2">
+<h2>Visualization tools for EDA</h2>
+<ul>
+<li class="fragment">EDA = Exploratory Data Analysis</li>
+<li class="fragment">The goal of EDA is to get a sense of your data</li>
+<li class="fragment">It tells you if the data needs cleaning (it normally does)</li>
+<li class="fragment">It tells you if there are biases you should be aware of</li>
+<li class="fragment">It starts driving your sense of discovery</li>
+</ul>
+</section>
+<section id="barplots-vs-histograms" class="slide level2">
+<h2>1. Barplots VS histograms</h2>
+<p>Broadly speaking: a barplot visualizes the distribution of a <strong>categorical</strong> variable while the histogram visualizes the distribution of a <strong>numerical</strong> variable.</p>
+
+<img data-src="Differences+between+histograms+and+bar+charts.webp" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption"><span class="smallcaps">From https://www.storytellingwithdata.com/blog/2021/1/28/histograms-and-bar-charts</span></p></section>
+<section id="what-is-a-distribution-of-data" class="slide level2">
+<h2>What is a “distribution of data”?</h2>
+<p>The distribution is a mathematical function that describes how the values of the data are distributed. For example:</p>
+<ul>
+<li class="fragment">independent measurements of the same variable tend to be normally distributed</li>
+<li class="fragment">income in a society tends to be log-normally distributed</li>
+<li class="fragment">the outcomes from a fair die are uniformly distributed</li>
+<li class="fragment">the number of offspring in a family tends to be a Poisson distribution</li>
+</ul>
+</section>
+<section id="bernoulli-distribution" class="slide level2">
+<h2>Bernoulli distribution</h2>
+<p>Distribution of values from a two-values outcome (e.g.&nbsp;a coin toss)</p>
+<div id="d5f872e3" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-2"><a href=""></a><span class="im">import</span> random</span>
+<span id="cb2-3"><a href=""></a>x <span class="op">=</span> random.choices([<span class="dv">0</span>, <span class="dv">1</span>], k<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb2-4"><a href=""></a>plt.hist(x)</span>
+<span id="cb2-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-5-output-1.png" width="795" height="415"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="normal-distribution" class="slide level2">
+<h2>Normal distribution</h2>
+<p>“Continuous distribution for a real-valued random variable”</p>
+<div id="04e69817" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a>x <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="dv">10</span>, size<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb3-2"><a href=""></a>plt.hist(x, bins<span class="op">=</span><span class="dv">20</span>, <span class="bu">range</span> <span class="op">=</span> (<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>), density<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-3"><a href=""></a>plt.plot(np.linspace(<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>, <span class="dv">10000</span>), </span>
+<span id="cb3-4"><a href=""></a>        <span class="dv">1</span><span class="op">/</span>(<span class="dv">10</span> <span class="op">*</span> np.sqrt(<span class="dv">2</span> <span class="op">*</span> np.pi)) <span class="op">*</span> np.exp( <span class="op">-</span> (np.linspace(<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>, <span class="dv">10000</span>))<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="dv">10</span><span class="op">**</span><span class="dv">2</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-7-output-1.png" width="808" height="415"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="pay-attention-to-bin-size" class="slide level2">
+<h2>Pay attention to bin size!</h2>
+<div id="5a318f1d" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-code-line-numbers="2-3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb4-2"><a href=""></a>ax[<span class="dv">0</span>].hist(x, bins<span class="op">=</span><span class="dv">50</span>, <span class="bu">range</span> <span class="op">=</span> (<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>), density<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-3"><a href=""></a>ax[<span class="dv">1</span>].hist(x, bins<span class="op">=</span><span class="dv">2</span>, <span class="bu">range</span> <span class="op">=</span> (<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>), density<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-4"><a href=""></a>ax[<span class="dv">0</span>].plot(np.linspace(<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>, <span class="dv">10000</span>), </span>
+<span id="cb4-5"><a href=""></a>        <span class="dv">1</span><span class="op">/</span>(<span class="dv">10</span> <span class="op">*</span> np.sqrt(<span class="dv">2</span> <span class="op">*</span> np.pi)) <span class="op">*</span> np.exp( <span class="op">-</span> (np.linspace(<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>, <span class="dv">10000</span>))<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="dv">10</span><span class="op">**</span><span class="dv">2</span>)))</span>
+<span id="cb4-6"><a href=""></a>ax[<span class="dv">1</span>].plot(np.linspace(<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>, <span class="dv">10000</span>), </span>
+<span id="cb4-7"><a href=""></a>        <span class="dv">1</span><span class="op">/</span>(<span class="dv">10</span> <span class="op">*</span> np.sqrt(<span class="dv">2</span> <span class="op">*</span> np.pi)) <span class="op">*</span> np.exp( <span class="op">-</span> (np.linspace(<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>, <span class="dv">10000</span>))<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="dv">10</span><span class="op">**</span><span class="dv">2</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-8-output-1.png" width="808" height="415"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="log-normal-distribution" class="slide level2">
+<h2>Log-normal distribution</h2>
+<p>In this case, the <strong>logarithm</strong> of the real-valued random variable is normally distributed</p>
+<div id="2c8867cc" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a>x <span class="op">=</span> np.exp(np.random.normal(<span class="dv">0</span>, <span class="dv">1</span>, size <span class="op">=</span> <span class="dv">100</span>))</span>
+<span id="cb5-2"><a href=""></a>plt.hist(x, bins<span class="op">=</span><span class="dv">30</span>, <span class="bu">range</span> <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">15</span>))</span>
+<span id="cb5-3"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-9-output-1.png" width="795" height="418"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="scatterplots" class="slide level2">
+<h2>2. Scatterplots</h2>
+<p>A scatter plot allows you to visualize the relationship between two numerical variables.</p>
+<div id="da4151de" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a>x <span class="op">=</span> np.linspace(<span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">100</span>)</span>
+<span id="cb6-2"><a href=""></a>y <span class="op">=</span> [element <span class="cf">if</span> element <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span> <span class="cf">for</span> element <span class="kw">in</span> <span class="dv">5</span><span class="op">*</span>np.log(x) <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">100</span>)]</span>
+<span id="cb6-3"><a href=""></a>plt.plot(x, y, <span class="st">'ro'</span>)</span>
+<span id="cb6-4"><a href=""></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb6-5"><a href=""></a>plt.ylabel(<span class="st">'Number of individuals'</span>)</span>
+<span id="cb6-6"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-10-output-1.png" width="815" height="436"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="scatterplots-with-too-many-points" class="slide level2">
+<h2>Scatterplots with too many points</h2>
+<div id="3ebaa1c2" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a>x <span class="op">=</span> np.linspace(<span class="dv">1</span>, <span class="dv">5000</span>, <span class="dv">5000</span>)</span>
+<span id="cb7-2"><a href=""></a>y <span class="op">=</span> [element <span class="cf">if</span> element <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span> <span class="cf">for</span> element <span class="kw">in</span> <span class="dv">5</span><span class="op">*</span>np.log(x) <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">5000</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="column fragment" style="width:50%;">
+<div id="eee9f26d" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a>plt.plot(x, y, <span class="st">'bo'</span>)</span>
+<span id="cb8-2"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-12-output-1.png" width="795" height="415"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fragment" style="width:50%;">
+<div id="1fc18bb3" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-code-line-numbers="1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a>plt.plot(x, y, <span class="st">'bo'</span>, alpha<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb9-2"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-13-output-1.png" width="795" height="415"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></section>
+<section id="boxplots" class="slide level2">
+<h2>3. Boxplots</h2>
+<p>A boxplot shows you the quartiles of a distribution of datapoints.</p>
+<div id="0d556ca3" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a>sns.boxplot(y, orient<span class="op">=</span><span class="st">'h'</span>, whis <span class="op">=</span> (<span class="fl">0.5</span>, <span class="fl">99.5</span>))</span>
+<span id="cb10-2"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-14-output-1.png" width="771" height="415"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="example-of-a-boxplot-the-iris-dataset" class="slide level2">
+<h2>Example of a boxplot: the Iris dataset</h2>
+<div id="e1b9697c" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a>df <span class="op">=</span> sns.load_dataset(<span class="st">'iris'</span>)</span>
+<span id="cb11-2"><a href=""></a></span>
+<span id="cb11-3"><a href=""></a>sns.boxplot( x<span class="op">=</span>df[<span class="st">"species"</span>], y<span class="op">=</span>df[<span class="st">"sepal_length"</span>], hue<span class="op">=</span>df[<span class="st">"species"</span>] )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-15-output-1.png" width="821" height="436"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="boxplots-can-be-difficult-friends" class="slide level2">
+<h2>Boxplots can be difficult friends</h2>
+
+<img data-src="boxplots-1.gif" style="width:150.0%" class="r-stretch quarto-figure-center"><p class="caption"><span class="smallcaps">Boxplots behaving badly (https://www.research.autodesk.com/publications/same-stats-different-graphs/)</span></p></section>
+<section id="enter-swarmplots-and-violinplots" class="slide level2">
+<h2>Enter swarmplots and violinplots!</h2>
+<p>Similar to boxplots, but it also shows the distribution of points</p>
+<div class="column">
+<div id="658ca749" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a>sns.swarmplot(x<span class="op">=</span>df[<span class="st">"species"</span>], y<span class="op">=</span>df[<span class="st">"sepal_length"</span>], hue <span class="op">=</span> df[<span class="st">"species"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-16-output-1.png" width="821" height="436"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div id="3ca075b6" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a>sns.violinplot(x<span class="op">=</span>df[<span class="st">"species"</span>], y<span class="op">=</span>df[<span class="st">"sepal_length"</span>], hue <span class="op">=</span> df[<span class="st">"species"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-17-output-1.png" width="807" height="436"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></section>
+<section id="from-eda-to-publication" class="slide level2">
+<h2>From EDA to publication</h2>
+<ul>
+<li class="fragment">Once you have performed EDA on a dataset, you can dig deeper in your data</li>
+<li class="fragment">Figures are (one of) the key(s) for simple story telling</li>
+<li class="fragment">In the same way as you write a layout of a Section before you write, you want to know what figures will support your article before you write</li>
+<li class="fragment">Good rule of thumb: 1 figure (even composite) = 1 key result</li>
+<li class="fragment">A figure should be as self-explanatory as possible</li>
+</ul>
+</section>
+<section id="seriously-no-pie-charts" class="slide level2">
+<h2>Seriously: no pie charts</h2>
+<p>Difficult to read. There are better ways…</p>
+<div class="column fragment" style="width:50%;">
+<div id="f452afe6" class="cell" data-execution_count="17">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-18-output-1.png" width="426" height="389"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fragment" style="width:50%;">
+<div id="a29cee58" class="cell" data-execution_count="18">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="from_data_to_viz_files/figure-revealjs/cell-19-output-1.png" width="804" height="415"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></section>
+<section id="anatomy-of-a-plot-in-python-or-in-r" class="slide level2">
+<h2>Anatomy of a plot in Python (or in R)</h2>
+<ul>
+<li class="fragment">An image is built in layers:
+<ul>
+<li class="fragment">a grid</li>
+<li class="fragment">axes, ticks and labels</li>
+<li class="fragment">content: scatterplot, histogram, density, etc</li>
+<li class="fragment">add-ons: themes, grid, text, annotations</li>
+</ul></li>
+<li class="fragment">An example: <a href="https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf">the ggplot2 cheat sheet</a></li>
+</ul>
+</section>
+<section id="visualization-styles-for-your-publications" class="slide level2">
+<h2>Visualization styles for your publications</h2>
+<p>First, let us look at some advanced visualization styles:</p>
+<ul>
+<li class="fragment"><a href="https://www.data-to-viz.com/">How to pick a visualization</a></li>
+<li class="fragment"><a href="https://seaborn.pydata.org/examples/index.html">Seaborn Gallery</a></li>
+<li class="fragment"><a href="https://python-graph-gallery.com/">Python Gallery</a></li>
+<li class="fragment"><a href="https://r-graph-gallery.com/">R / ggplot2 Gallery</a></li>
+</ul>
+</section>
+<section id="color-palettes" class="slide level2">
+<h2>Color Palettes</h2>
+<ul>
+<li class="fragment"><a href="https://colorbrewer2.org/">Colorbrewer</a></li>
+<li class="fragment"><a href="https://matplotlib.org/stable/users/explain/colors/colormaps.html">Matplotlib (python) base palettes</a></li>
+<li class="fragment"><a href="https://r-graph-gallery.com/color-palette-finder">R palettes</a></li>
+<li class="fragment"><a href="https://seaborn.pydata.org/tutorial/color_palettes.html">(Seaborn palettes)</a></li>
+</ul>
+</section>
+<section id="exercise-perform-eda-of-your-data-or-use-the-dataset-provided" class="slide level2">
+<h2>Exercise: perform EDA of your data (or use the dataset provided)</h2>
+<div id="59bd3e68" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb14-2"><a href=""></a>tsunami <span class="op">=</span> pd.read_csv(<span class="st">'earthquake_data_tsunami.csv'</span>)</span>
+<span id="cb14-3"><a href=""></a>tsunami.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="380">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">magnitude</th>
+<th data-quarto-table-cell-role="th">cdi</th>
+<th data-quarto-table-cell-role="th">mmi</th>
+<th data-quarto-table-cell-role="th">sig</th>
+<th data-quarto-table-cell-role="th">nst</th>
+<th data-quarto-table-cell-role="th">dmin</th>
+<th data-quarto-table-cell-role="th">gap</th>
+<th data-quarto-table-cell-role="th">depth</th>
+<th data-quarto-table-cell-role="th">latitude</th>
+<th data-quarto-table-cell-role="th">longitude</th>
+<th data-quarto-table-cell-role="th">Year</th>
+<th data-quarto-table-cell-role="th">Month</th>
+<th data-quarto-table-cell-role="th">tsunami</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>7.0</td>
+<td>8</td>
+<td>7</td>
+<td>768</td>
+<td>117</td>
+<td>0.509</td>
+<td>17.0</td>
+<td>14.000</td>
+<td>-9.7963</td>
+<td>159.596</td>
+<td>2022</td>
+<td>11</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>6.9</td>
+<td>4</td>
+<td>4</td>
+<td>735</td>
+<td>99</td>
+<td>2.229</td>
+<td>34.0</td>
+<td>25.000</td>
+<td>-4.9559</td>
+<td>100.738</td>
+<td>2022</td>
+<td>11</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>7.0</td>
+<td>3</td>
+<td>3</td>
+<td>755</td>
+<td>147</td>
+<td>3.125</td>
+<td>18.0</td>
+<td>579.000</td>
+<td>-20.0508</td>
+<td>-178.346</td>
+<td>2022</td>
+<td>11</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>7.3</td>
+<td>5</td>
+<td>5</td>
+<td>833</td>
+<td>149</td>
+<td>1.865</td>
+<td>21.0</td>
+<td>37.000</td>
+<td>-19.2918</td>
+<td>-172.129</td>
+<td>2022</td>
+<td>11</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>6.6</td>
+<td>0</td>
+<td>2</td>
+<td>670</td>
+<td>131</td>
+<td>4.998</td>
+<td>27.0</td>
+<td>624.464</td>
+<td>-25.5948</td>
+<td>178.278</td>
+<td>2022</td>
+<td>11</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>(source <a href="https://www.kaggle.com/datasets/ahmeduzaki/global-earthquake-tsunami-risk-assessment-dataset">Kaggle</a>)</p>
+</section>
+<section id="to-succeed" class="slide level2 scrollable">
+<h2>To succeed:</h2>
+<div title="Use R or Python, or something else entirely">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Use R or Python, or something else entirely</strong></p>
+</div>
+<div class="callout-content">
+<p>In R, try using base R or the Tidyverse suite of libraries. In Python, play around with Matplotlib, Pandas and Seaborn</p>
+</div>
+</div>
+</div>
+</div>
+<ol type="1">
+<li class="fragment">Perform EDA on your dataset.</li>
+<li class="fragment">Produce at least 3 fun facts supported by visualization. E.g.:
+<ul>
+<li class="fragment">interesting biases that you found in the data through EDA</li>
+<li class="fragment">an interesting correlation between two variables</li>
+<li class="fragment">unusual concentrations of data around certain variables</li>
+</ul></li>
+<li class="fragment">Create a complex image that could support a hypothesis. E.g.:
+<ul>
+<li class="fragment">a scatterplot which includes a regression of your data</li>
+<li class="fragment">a multiple plot showing different aspects of your data</li>
+</ul></li>
+</ol>
+</section>
+<section id="infravis" class="slide level2">
+<h2>InfraVis</h2>
+<p>InfraVis can support you if you have visualization needs!</p>
+
+<img data-src="InfraVis-fontDarkRight.png" class="r-stretch"></section>
+<section id="thank-you-for-your-attention" class="slide level2">
+<h2>Thank you for your attention!</h2>
+<div class="fragment">
+<p>Further readings:</p>
+<ul>
+<li class="fragment"><a href="https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf">Visualizing data in political science, R. Traunmüller</a></li>
+<li class="fragment"><a href="https://r4ds.hadley.nz/data-visualize.html">R for Data Science (2e), Wickam et al.</a></li>
+<li class="fragment"><a href="https://jakevdp.github.io/PythonDataScienceHandbook/04.00-introduction-to-matplotlib.html">Python data science handbook, ch.&nbsp;4</a></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Cheatsheets:</p>
+<ul>
+<li class="fragment"><a href="https://python-graph-gallery.com/cheat-sheets/">Collection of Python cheatsheets</a></li>
+<li class="fragment"><a href="https://r-graph-gallery.com/cheatsheets.html">Collection of R cheatsheets</a></li>
+</ul>
+</div>
+
+
+<aside><div>
+<p>Parts of this course took inspiration form a similar course by Marc Vander Linden (University of Bournemouth).</p>
+</div></aside></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>Matteo Tomasini, GRIDH</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="from_data_to_viz_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="from_data_to_viz_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="from_data_to_viz_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="from_data_to_viz_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="from_data_to_viz_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="from_data_to_viz_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="from_data_to_viz_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="from_data_to_viz_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="from_data_to_viz_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="from_data_to_viz_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1500,
+
+        height: 1000,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+                // target, if specified
+                link.setAttribute("target", "_blank");
+                if (link.getAttribute("rel") === null) {
+                  link.setAttribute("rel", "noopener");
+                }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
