@@ -240,7 +240,7 @@ Matteo Tomasini, GRIDH, University of Gothenburg
 <section id="the-power-of-data-visualization" class="slide level2">
 <h2>The power of data visualization</h2>
 <p>Imagine you are presented with 4 datasets with variables <span class="math inline">\(x_n\)</span> and <span class="math inline">\(y_n\)</span>:</p>
-<div id="04cea496" class="cell" data-execution_count="1">
+<div id="6c61437d" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stdout">
 <pre><code>            x                        y                    
 dataset     I    II   III    IV      I    II    III     IV
@@ -263,8 +263,8 @@ g
 <section id="the-power-of-data-visualization-1" class="slide level2 smaller">
 <h2>The power of data visualization</h2>
 <p>Let’s summarize the data, that is produce means, minima, maxima…</p>
-<div id="fafe8c8a" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="363">
+<div id="1cc224bd" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -398,7 +398,7 @@ g
 </section>
 <section id="nope" class="slide level2 smaller">
 <h2>Nope!</h2>
-<div id="f15b0dfd" class="cell" data-execution_count="3">
+<div id="e37a8cef" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -514,10 +514,23 @@ g
 <li class="fragment">the number of offspring in a family tends to be a Poisson distribution</li>
 </ul>
 </section>
+<section id="anatomy-of-a-plot-in-python-or-in-r" class="slide level2">
+<h2>Anatomy of a plot in Python (or in R)</h2>
+<ul>
+<li class="fragment">An image is built in layers:
+<ul>
+<li class="fragment">a grid</li>
+<li class="fragment">axes, ticks and labels</li>
+<li class="fragment">content: scatterplot, histogram, density, etc</li>
+<li class="fragment">add-ons: themes, grid, text, annotations</li>
+</ul></li>
+<li class="fragment">An example: <a href="https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf">the ggplot2 cheat sheet</a></li>
+</ul>
+</section>
 <section id="bernoulli-distribution" class="slide level2">
 <h2>Bernoulli distribution</h2>
 <p>Distribution of values from a two-values outcome (e.g.&nbsp;a coin toss)</p>
-<div id="d5f872e3" class="cell" data-execution_count="4">
+<div id="6761dd36" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-2"><a href=""></a><span class="im">import</span> random</span>
 <span id="cb2-3"><a href=""></a>x <span class="op">=</span> random.choices([<span class="dv">0</span>, <span class="dv">1</span>], k<span class="op">=</span><span class="dv">100</span>)</span>
@@ -535,7 +548,7 @@ g
 <section id="normal-distribution" class="slide level2">
 <h2>Normal distribution</h2>
 <p>“Continuous distribution for a real-valued random variable”</p>
-<div id="04e69817" class="cell" data-execution_count="6">
+<div id="424c5332" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a>x <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="dv">10</span>, size<span class="op">=</span><span class="dv">100</span>)</span>
 <span id="cb3-2"><a href=""></a>plt.hist(x, bins<span class="op">=</span><span class="dv">20</span>, <span class="bu">range</span> <span class="op">=</span> (<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>), density<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb3-3"><a href=""></a>plt.plot(np.linspace(<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>, <span class="dv">10000</span>), </span>
@@ -551,7 +564,7 @@ g
 </section>
 <section id="pay-attention-to-bin-size" class="slide level2">
 <h2>Pay attention to bin size!</h2>
-<div id="5a318f1d" class="cell" data-execution_count="7">
+<div id="e38b5cf8" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-code-line-numbers="2-3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">2</span>)</span>
 <span id="cb4-2"><a href=""></a>ax[<span class="dv">0</span>].hist(x, bins<span class="op">=</span><span class="dv">50</span>, <span class="bu">range</span> <span class="op">=</span> (<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>), density<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb4-3"><a href=""></a>ax[<span class="dv">1</span>].hist(x, bins<span class="op">=</span><span class="dv">2</span>, <span class="bu">range</span> <span class="op">=</span> (<span class="op">-</span><span class="dv">40</span>, <span class="dv">40</span>), density<span class="op">=</span><span class="va">True</span>)</span>
@@ -571,7 +584,7 @@ g
 <section id="log-normal-distribution" class="slide level2">
 <h2>Log-normal distribution</h2>
 <p>In this case, the <strong>logarithm</strong> of the real-valued random variable is normally distributed</p>
-<div id="2c8867cc" class="cell" data-execution_count="8">
+<div id="df281d53" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a>x <span class="op">=</span> np.exp(np.random.normal(<span class="dv">0</span>, <span class="dv">1</span>, size <span class="op">=</span> <span class="dv">100</span>))</span>
 <span id="cb5-2"><a href=""></a>plt.hist(x, bins<span class="op">=</span><span class="dv">30</span>, <span class="bu">range</span> <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">15</span>))</span>
 <span id="cb5-3"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -587,7 +600,7 @@ g
 <section id="scatterplots" class="slide level2">
 <h2>2. Scatterplots</h2>
 <p>A scatter plot allows you to visualize the relationship between two numerical variables.</p>
-<div id="da4151de" class="cell" data-execution_count="9">
+<div id="db8d98a5" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a>x <span class="op">=</span> np.linspace(<span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">100</span>)</span>
 <span id="cb6-2"><a href=""></a>y <span class="op">=</span> [element <span class="cf">if</span> element <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span> <span class="cf">for</span> element <span class="kw">in</span> <span class="dv">5</span><span class="op">*</span>np.log(x) <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">100</span>)]</span>
 <span id="cb6-3"><a href=""></a>plt.plot(x, y, <span class="st">'ro'</span>)</span>
@@ -605,12 +618,12 @@ g
 </section>
 <section id="scatterplots-with-too-many-points" class="slide level2">
 <h2>Scatterplots with too many points</h2>
-<div id="3ebaa1c2" class="cell" data-execution_count="10">
+<div id="8331a28e" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a>x <span class="op">=</span> np.linspace(<span class="dv">1</span>, <span class="dv">5000</span>, <span class="dv">5000</span>)</span>
 <span id="cb7-2"><a href=""></a>y <span class="op">=</span> [element <span class="cf">if</span> element <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span> <span class="cf">for</span> element <span class="kw">in</span> <span class="dv">5</span><span class="op">*</span>np.log(x) <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">5000</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="column fragment" style="width:50%;">
-<div id="eee9f26d" class="cell" data-execution_count="11">
+<div id="bed37bc7" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a>plt.plot(x, y, <span class="st">'bo'</span>)</span>
 <span id="cb8-2"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -622,7 +635,7 @@ g
 </div>
 </div>
 </div><div class="column fragment" style="width:50%;">
-<div id="1fc18bb3" class="cell" data-execution_count="12">
+<div id="21e4b8b3" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-code-line-numbers="1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a>plt.plot(x, y, <span class="st">'bo'</span>, alpha<span class="op">=</span><span class="fl">0.1</span>)</span>
 <span id="cb9-2"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -637,7 +650,7 @@ g
 <section id="boxplots" class="slide level2">
 <h2>3. Boxplots</h2>
 <p>A boxplot shows you the quartiles of a distribution of datapoints.</p>
-<div id="0d556ca3" class="cell" data-execution_count="13">
+<div id="14450cbd" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a>sns.boxplot(y, orient<span class="op">=</span><span class="st">'h'</span>, whis <span class="op">=</span> (<span class="fl">0.5</span>, <span class="fl">99.5</span>))</span>
 <span id="cb10-2"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -651,7 +664,7 @@ g
 </section>
 <section id="example-of-a-boxplot-the-iris-dataset" class="slide level2">
 <h2>Example of a boxplot: the Iris dataset</h2>
-<div id="e1b9697c" class="cell" data-execution_count="14">
+<div id="20ad426d" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a>df <span class="op">=</span> sns.load_dataset(<span class="st">'iris'</span>)</span>
 <span id="cb11-2"><a href=""></a></span>
 <span id="cb11-3"><a href=""></a>sns.boxplot( x<span class="op">=</span>df[<span class="st">"species"</span>], y<span class="op">=</span>df[<span class="st">"sepal_length"</span>], hue<span class="op">=</span>df[<span class="st">"species"</span>] )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -672,7 +685,7 @@ g
 <h2>Enter swarmplots and violinplots!</h2>
 <p>Similar to boxplots, but it also shows the distribution of points</p>
 <div class="column">
-<div id="658ca749" class="cell" data-execution_count="15">
+<div id="c3b96b79" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a>sns.swarmplot(x<span class="op">=</span>df[<span class="st">"species"</span>], y<span class="op">=</span>df[<span class="st">"sepal_length"</span>], hue <span class="op">=</span> df[<span class="st">"species"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -683,7 +696,7 @@ g
 </div>
 </div>
 </div><div class="column">
-<div id="3ca075b6" class="cell" data-execution_count="16">
+<div id="b0b8dd0d" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a>sns.violinplot(x<span class="op">=</span>df[<span class="st">"species"</span>], y<span class="op">=</span>df[<span class="st">"sepal_length"</span>], hue <span class="op">=</span> df[<span class="st">"species"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -708,7 +721,7 @@ g
 <h2>Seriously: no pie charts</h2>
 <p>Difficult to read. There are better ways…</p>
 <div class="column fragment" style="width:50%;">
-<div id="f452afe6" class="cell" data-execution_count="17">
+<div id="4d1f1a95" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -718,7 +731,7 @@ g
 </div>
 </div>
 </div><div class="column fragment" style="width:50%;">
-<div id="a29cee58" class="cell" data-execution_count="18">
+<div id="88cc5de3" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -728,19 +741,6 @@ g
 </div>
 </div>
 </div></section>
-<section id="anatomy-of-a-plot-in-python-or-in-r" class="slide level2">
-<h2>Anatomy of a plot in Python (or in R)</h2>
-<ul>
-<li class="fragment">An image is built in layers:
-<ul>
-<li class="fragment">a grid</li>
-<li class="fragment">axes, ticks and labels</li>
-<li class="fragment">content: scatterplot, histogram, density, etc</li>
-<li class="fragment">add-ons: themes, grid, text, annotations</li>
-</ul></li>
-<li class="fragment">An example: <a href="https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf">the ggplot2 cheat sheet</a></li>
-</ul>
-</section>
 <section id="visualization-styles-for-your-publications" class="slide level2">
 <h2>Visualization styles for your publications</h2>
 <p>First, let us look at some advanced visualization styles:</p>
@@ -762,11 +762,11 @@ g
 </section>
 <section id="exercise-perform-eda-of-your-data-or-use-the-dataset-provided" class="slide level2">
 <h2>Exercise: perform EDA of your data (or use the dataset provided)</h2>
-<div id="59bd3e68" class="cell" data-execution_count="19">
+<div id="9b773b36" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb14-2"><a href=""></a>tsunami <span class="op">=</span> pd.read_csv(<span class="st">'earthquake_data_tsunami.csv'</span>)</span>
 <span id="cb14-3"><a href=""></a>tsunami.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="380">
+<div class="cell-output cell-output-display" data-execution_count="19">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {

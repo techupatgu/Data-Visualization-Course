@@ -162,6 +162,15 @@ The distribution is a mathematical function that describes how the values of the
 - the outcomes from a fair die are uniformly distributed
 - the number of offspring in a family tends to be a Poisson distribution
 
+## Anatomy of a plot in Python (or in R)
+
+- An image is built in layers:
+    - a grid
+    - axes, ticks and labels
+    - content: scatterplot, histogram, density, etc
+    - add-ons: themes, grid, text, annotations
+- An example: [the ggplot2 cheat sheet](https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf) 
+
 ## Bernoulli distribution
 
 Distribution of values from a two-values outcome (e.g. a coin toss)
@@ -326,14 +335,6 @@ plt.show()
 ```
 :::
 
-## Anatomy of a plot in Python (or in R)
-
-- An image is built in layers:
-    - a grid
-    - axes, ticks and labels
-    - content: scatterplot, histogram, density, etc
-    - add-ons: themes, grid, text, annotations
-- An example: [the ggplot2 cheat sheet](https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf) 
 
 ## Visualization styles for your publications
 First, let us look at some advanced visualization styles:
