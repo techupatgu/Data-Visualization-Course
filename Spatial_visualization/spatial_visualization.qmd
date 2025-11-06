@@ -1,0 +1,415 @@
+---
+title: "Bases of spatial visualization"
+author: "Matteo Tomasini, GRIDH, University of Gothenburg"
+date: "2025-11-06"
+format: 
+  revealjs:
+    scrollable: true
+    theme: sky
+    incremental: true
+    code-block-height: 100px
+    footer: "Matteo Tomasini, GRIDH"
+    link-external-newwindow: true
+    width: 1500
+jupyter: python3
+---
+
+## Learning outcomes
+At the end of the lecture:
+
+- you will have a basic understanding of how to plot things on a map
+- you should have a broad view of what tools are used for spatial visualization
+- you will be able to plot basic maps starting from geo-referenced data
+
+## Summary
+- What is GIS? What can it do?
+- Georeferenced data an maps
+- Spatial visualization with Python
+- Spatial visualization with R
+- Spatial visualization with QGIS
+- A short intro to spatial analysis
+
+## Geographic Information Systems {.smaller}
+- GIS are "multi-component environment used to create, manage, visualize and analyze data and its spatial counterpart" (from *Intro to GIS and spatial analysis* by M. Gimond - see further reading at the end)
+- In the course yesterday we talked about data types and structures. Geography is just encoded as a bit of data.
+- The GIS provides us with a suit of tools to keep up with all the needs of spatial analysis. Typically: 
+    - some type of data management tool (e.g. reading specific formats)
+    - analysis functions
+    - plotting functions
+
+## Common GIS
+- For non-coding people:
+    - QGIS
+    - ArcGIS
+    - GRASS
+- For coding people:
+    - Python with certain libraries such as `geopandas` and `cartopy`
+    - R with libraries such as `sf` and `ggspatial`
+
+## Geo-referenced data
+- To work spatially, our data needs to be geo-referenced, meaning that each data point happens somewhere in space
+- Space does not have to be geography: any well-defined spatial reference system will work
+    - e.g. position on a football pitch
+    - position with respect to an origin
+
+## Spatial data types
+(from *Intro to GIS and spatial analysis*)
+
+:::{.column width=33%}
+![Points](point.png)
+:::
+
+:::{.column width=33%}
+![Polyline](polyline.png) 
+:::
+:::{.column width=33%}
+![Polygon](polygon.png)
+:::
+
+## Geo encoding, maps and projections
+- Georeferencing data = situating it on a map
+- Reference can be 
+    - direct (each data point is connected to a piece of spatial data)
+    - indirect (data points are connected to another piece of data, such as the name of a place, and the place refers directly to a geographic location)
+
+## Types of reference {.smaller}
+
+Style 1 (simple table):
+
+| Variable 1 |  Lat   |   Lon  |
+|------------|--------|--------|
+| 50.19572   | 58.112 | 11.951 |
+
+Style 2:
+
+| Variable 1 |      Coordinates      |
+|------------|-----------------------|
+| 50.19572   | POINT(58.112 11.951)  |
+
+Style 3:
+
+| Variable 1 |  Location  |
+|------------|------------|
+| 50.19572   | Gothenburg |
+
+|  Location  |      Coordinates      |
+|------------|-----------------------|
+| Gothenburg | POINT(58.112 11.951)  |
+
+
+## Source for your maps
+
+- [OpenStreetMap](https://www.openstreetmap.org/)
+    - often accessible via API in different software
+- [Natural Earth](https://www.naturalearthdata.com/)
+- [Leaflet](https://leafletjs.com/)
+    - great to embed in websites
+    - there are plugins to it in many different environments
+
+## Projections
+
+- How to project a 3D object on a 2D plane...? 
+- Different solutions have been produced since the Hellenistic times!
+- Let's compare different countries! <https://thetruesize.com/>
+- For some examples: [List of map projections on Wikipedia](https://en.wikipedia.org/wiki/List_of_map_projections)
+
+## Equirectangular projection (aka Plate Carrée)
+![Equirectangular projection (source Wikipedia)](Equirectangular_projection_SW.jpg)
+
+---
+
+![Visualizing the equirectangular projection (source Wikipedia)](Plate_Carrée_with_Tissot's_Indicatrices_of_Distortion.svg.png)
+
+## Mercator projection
+![Mercator projection (source Wikipedia)](Mercator_projection_Square.JPG)
+
+---
+
+![Visualizing the Mercator projection (source Wikipedia)](Mercator_with_Tissot's_Indicatrices_of_Distortion.svg.png)
+
+
+## Natural Earth projection
+![Natural Earth projection (source Wikipedia)](Natural_Earth_projection_SW.JPG)
+
+---
+
+![Visualizing the Natural Earth projection (source Wikipedia)](Natural_Earth_with_Tissot's_Indicatrices_of_Distortion.svg.png)
+
+## Spatial visualization with Python {.smaller}
+:::{.fragment}
+```{python}
+#| echo : true
+import pandas as pd
+storm = pd.read_csv('storm_data_NOAA.csv', sep=",")
+storm.head(2)
+```
+:::
+
+:::{.fragment}
+```{python}
+#| echo : true
+import geopandas as gpd
+storm_gpd = gpd.GeoDataFrame(geometry=gpd.points_from_xy(storm.long, storm.lat, crs="EPSG:4326"), data=storm)
+storm_gpd.head(2)
+```
+:::
+
+## Opening data with geopandas {.smaller}
+:::{.fragment}
+```{python}
+#| echo : true
+nyc_data = gpd.read_file('nyc_data.shp')
+nyc_data.head(2)
+```
+:::
+
+:::{.fragment}
+```{python}
+#| echo : true
+trajectory = gpd.read_file('N_2oar_e10_1995-07-13.geojson')
+trajectory.head()
+```
+:::
+
+## Filtering data {.smaller}
+```{python}
+#| echo : true
+storm_nicole = storm_gpd[storm_gpd['name'].str.match('Nicole') == True]
+storm_nicole.head(2)
+```
+
+```{python}
+#| echo : true
+storm_1995 = storm_gpd[storm_gpd['year'] == 1995]
+storm_1995.head(2)
+```
+
+## Re-projecting data
+
+:::{.column width=50% .fragment}
+```{python} 
+#| echo : true
+print(f"Projection: {storm_gpd.crs}")
+storm_gpd.geometry
+```
+:::
+
+:::{.column width=50% .fragment}
+```{python}
+#| echo : true
+storm_reprojected = storm_gpd.to_crs('EPSG:21781')
+storm_reprojected.geometry
+```
+:::
+ 
+## Data summarization
+```{python}
+#| echo : true
+storm_gpd.describe()
+```
+
+## Let's plot!
+:::{.column .fragment}
+```{python}
+#| echo : true
+storm_gpd.plot(alpha=0.2)
+```
+:::
+
+:::{.column .fragment}
+```{python}
+#| echo : true
+nyc_data.plot()
+```
+:::
+
+## Fetch map data with `cartopy`
+```{python} 
+#| echo : true
+import cartopy
+import matplotlib.pyplot as plt
+
+bbox = [min(storm_gpd.long), min(storm_gpd.lat), max(storm_gpd.long), max(storm_gpd.lat)]
+
+fig, ax = plt.subplots(subplot_kw={'projection': cartopy.crs.PlateCarree()}, figsize = (15, 7))
+storm_gpd.plot(ax=ax, color='r', alpha=0.3, markersize=1)
+# Choose coastline resolution
+ax.coastlines('50m')
+# Limit map to bounding box
+ax.set_extent([bbox[0], bbox[2], bbox[1], bbox[3]], cartopy.crs.PlateCarree())
+# Add ocean and land features, for visuals
+ax.add_feature(cartopy.feature.OCEAN, zorder=0)
+ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+# Adds gridds to visual
+ax.gridlines(crs=cartopy.crs.PlateCarree(), draw_labels=True,
+             linewidth=2, color='gray', alpha=0.2, linestyle='--')
+```
+
+## Fetch data from OSM with `osmnx`
+`osmnx` is a Python library to access OpenStreetMap data. 
+
+```{python}
+#| echo : true
+import osmnx
+from shapely.geometry import box
+bounds = [11.942860,57.684423,12.012554,57.714785]
+bbox = box(*bounds)
+buildings = osmnx.features_from_polygon(bbox, tags={"building" : True})
+buildings.plot()
+```
+
+## Plot maps with R
+With R we can use the packages `sf` and `ggplot2`, but for quick results `leaflet` works great:
+```{R}
+library(leaflet)
+data = read.csv("storm_data_NOAA.csv")
+m = leaflet(data = data) %>%
+  addTiles() %>%
+  addCircles(~long, ~lat, radius=0.5, weight=1, opacity=0.3)
+m
+```
+![](Simple_R_leaflet_map.png)
+
+## Background maps with `leaflet`
+:::{.column .fragment}
+```{R}
+m <- leaflet() %>% 
+   addTiles() %>% 
+   setView( lng = 2.34, lat = 48.85, zoom = 5 ) %>% 
+   addProviderTiles("NASAGIBS.ViirsEarthAtNight2012")
+m
+```
+![](night_map.png)
+:::
+
+:::{.column .fragment}
+```{R}
+m <- leaflet() %>% 
+   addTiles() %>% 
+   setView( lng = 2.34, lat = 48.85, zoom = 5 ) %>% 
+   addProviderTiles("Esri.WorldImagery")
+m
+```
+![](realistic_map.png)
+:::
+
+
+## Maps in R with `ggplot2`
+Let's go back to NYC data.
+```{R}
+library(sf)
+library(ggplot2)
+librar(hrbrthemes)
+library(geodaData)
+data("nyc_sf")
+plot(nyc_sf)
+```
+![](viz_all_data_nyc.png)
+
+## Maps in R with `ggplot2`
+:::{.column .fragment}
+```{R}
+p <- ggplot(nyc_sf) + 
+  geom_sf(aes(fill=rent2002)) + 
+  theme_ipsum()
+p
+```
+![](plot_nyc_rent2002.png)
+ 
+:::
+
+:::{.column .fragment}
+```{R}
+p <- ggplot(nyc_sf) + 
+  geom_sf(aes(fill=yrhom02)) + 
+  theme_ipsum()
+p
+```
+![](yrs_home_own.png)
+::: 
+
+## Using `tmap` for thematic maps {.smaller}
+With `tmap` one can develop thematic maps in an easier way with the same grammar style as `ggplot2`:
+
+:::{.column .fragment}
+```{R}
+library(tmap)
+tm_shape(World, crs = "+proj=eqearth") +
+  tm_polygons(
+    fill = "gender",
+    fill.scale = tm_scale_intervals(values = "-tableau.classic_orange_blue"),
+    fill.legend = tm_legend(
+      "Gender Inequality Index (GII)", 
+      position = tm_pos_on_top(pos.h = "left", pos.v = "bottom"), 
+      bg.color = "white")) +
+  tm_options(earth_boundary = TRUE, frame = FALSE)
+
+```
+![](gender_inequality_world_equalearth.png)
+:::
+
+:::{.column .fragment}
+```{R}
+tm_shape(nyc_sf) +
+  tm_polygons("rent2002", 
+              style="quantile", 
+              title="New York City \nrent in 2002")
+```
+![](rent_nyc_quartiles.png)
+:::
+
+## Demo of QGIS! {.smaller}
+
+QGIS is a GIS Application that can be both manipulated with a script or by point-and-click. 
+![](qgis_1.png)
+
+:::{.callout-note}
+Follow along if you have QGIS
+:::
+
+## A note about spatial analysis
+This is not a course about spatial analysis, BUT
+
+- Spatial stuff is not just about visualization!
+    - Spatial analysis does some pretty cool stuff for you.
+- All the GIS software / applications that I presented today allow you to do spatial statistics
+- I highly suggest you follow a dedicated course to spatial analysis! 
+
+## Example of cool spatial analyses: interpolation
+
+![Interpolation of data from a few samples](temperature_map.png)
+
+## Example of cool spatial analyses: Cholera outbreak in Soho
+
+:::{.column width=43% .fragment}
+![Cholera infections (red) and public water pumps (purple)](project2.png)
+:::
+
+:::{.column .fragment}
+![Voronoi tesselation showing that most infections are in one tessel](voronoi2.png)
+:::
+
+## Example of cool spatial analyses: Network analysis
+
+![Analysis of a network of roads. Which is the shortest path between the two points? And the fastest?](network_map.png)
+
+## InfraVis
+
+InfraVis can support you if you have visualization needs! 
+
+![](InfraVis-fontDarkRight.png)
+
+## Thanks for your attention!
+
+Further readings:
+
+- [Intro to GIS and spatial analysis, M. Gimond](https://mgimond.github.io/Spatial/index.html)
+- [Spatial Analytics course at Aalto Unviersity](https://spatial-analytics.readthedocs.io/en/develop/index.html)
+- [Python for Geographic Data Analysis, Tenkanen et al.](https://python-gis-book.readthedocs.io/en/develop/part2/index.html)
+- [Introduction to  visualising spatial data in R, R. Lovelace](https://cran.r-project.org/doc/contrib/intro-spatial-rl.pdf)
+- [A gentle intro to QGIS](https://docs.qgis.org/3.40/en/docs/gentle_gis_introduction/)
+
+Training resources:
+
+- [Training datasets for geodata in R](https://spatialanalysis.github.io/geodaData/)
+- [QGIS Training Manual](https://docs.qgis.org/3.40/en/docs/training_manual/index.html)
